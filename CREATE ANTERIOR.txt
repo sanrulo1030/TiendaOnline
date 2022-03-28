@@ -1,0 +1,10 @@
+ public async Task<IActionResult> Create([Bind("Id,Name")] Country country)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(country);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(country);
+        }
