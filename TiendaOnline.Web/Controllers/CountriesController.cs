@@ -72,10 +72,11 @@ namespace TiendaOnline.Web.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        ModelState.AddModelError(string.Empty,
+                       dbUpdateException.InnerException.Message);
                     }
                 }
-                catch (Exception exception)
+ catch (Exception exception)
                 {
                     ModelState.AddModelError(string.Empty, exception.Message);
                 }
@@ -107,27 +108,35 @@ namespace TiendaOnline.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Country country)
         {
-            if (id != country.Id) { return NotFound(); }
+            if (id != country.Id)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid)
             {
                 try
-                { 
+                {
                     _context.Update(country);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index)); 
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateException dbUpdateException) 
-                {    
-                    if (dbUpdateException.InnerException.Message.Contains("duplicate")) 
-                    { 
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if
+                   (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
                         ModelState.AddModelError(string.Empty, "hay un registro con el mismo nombre.");
-                    } 
-                    else 
-                    { 
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message); 
-                    } 
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty,
+                       dbUpdateException.InnerException.Message);
+                    }
                 }
-                catch (Exception exception) { ModelState.AddModelError(string.Empty, exception.Message); }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
             }
             return View(country);
         }
@@ -139,24 +148,19 @@ namespace TiendaOnline.Web.Controllers
             {
                 return NotFound();
             }
-
-
-
             Country country = await _context.Countries
-                .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
                 return NotFound();
             }
-
-
-
             _context.Countries.Remove(country);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-    
+
+
         private bool CountryExists(int id)
         {
             return _context.Countries.Any(e => e.Id == id);
